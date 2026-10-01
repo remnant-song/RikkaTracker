@@ -34,6 +34,7 @@ Built with high-performance `DrawingVisual` hybrid rendering, the timeline runs 
 
 ### 4. Web Browsing Tracking & Browser Extension
 - Supports real-time web activity tracking through the browser extension, capturing the currently active web page and recording browsing duration.
+- Extensions available for Chrome, Edge and Firefox (`WebExtensions/` in the repository; the Firefox build loads via `about:debugging` → "Load Temporary Add-on" or from AMO).
 - Website domains are displayed as user-friendly names (e.g., `google.com` → "Google"), improving interface readability.
 - A dedicated view mode switch (Apps only / Web only / Combined) lets you flexibly browse different data dimensions.
 

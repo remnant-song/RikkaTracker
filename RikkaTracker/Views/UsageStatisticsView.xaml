@@ -165,8 +165,8 @@
                                     </Style.Triggers>
                                 </Style>
                             </StackPanel.Style>
-                            <!-- @Desc: Box → \uEC5F (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xEC5F;" FontSize="48" Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+                            <!-- @Desc: Folder → \uE838 (Segoe Fluent Icons; embedded font lacks \uEC5F Box) -->
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE838;" FontSize="48" Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
                             <ui:TextBlock Text="{DynamicResource StrNoData}" FontSize="16" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Grid>

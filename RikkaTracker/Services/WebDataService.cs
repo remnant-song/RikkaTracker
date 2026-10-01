@@ -23,13 +23,14 @@ namespace RikkaTracker.Services
             using var connection = _dbContext.CreateConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                INSERT INTO WebBrowseLog (Url, Domain, Title, Icon, StartTime, EndTime)
-                VALUES ($url, $domain, $title, $icon, $startTime, $endTime)
+                INSERT INTO WebBrowseLog (Url, Domain, Title, Icon, Browser, StartTime, EndTime)
+                VALUES ($url, $domain, $title, $icon, $browser, $startTime, $endTime)
             ";
             command.Parameters.AddWithValue("$url", segment.Url);
             command.Parameters.AddWithValue("$domain", segment.Domain);
             command.Parameters.AddWithValue("$title", segment.Title);
             command.Parameters.AddWithValue("$icon", segment.Icon ?? string.Empty);
+            command.Parameters.AddWithValue("$browser", segment.Browser ?? string.Empty);
             command.Parameters.AddWithValue("$startTime", segment.StartTime.ToString("o"));
             command.Parameters.AddWithValue("$endTime", segment.EndTime.ToString("o"));
             await command.ExecuteNonQueryAsync();
@@ -41,7 +42,7 @@ namespace RikkaTracker.Services
             using var connection = _dbContext.CreateConnection();
             using var command = connection.CreateCommand();
             command.CommandText = @"
-                SELECT Id, Url, Domain, Title, Icon, StartTime, EndTime
+                SELECT Id, Url, Domain, Title, Icon, Browser, StartTime, EndTime
                 FROM WebBrowseLog
                 WHERE StartTime >= $from AND StartTime <= $to
                 ORDER BY StartTime ASC
@@ -59,8 +60,9 @@ namespace RikkaTracker.Services
                     Domain = reader.GetString(2),
                     Title = reader.GetString(3),
                     Icon = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
-                    StartTime = DateTime.Parse(reader.GetString(5), null, DateTimeStyles.RoundtripKind),
-                    EndTime = DateTime.Parse(reader.GetString(6), null, DateTimeStyles.RoundtripKind)
+                    Browser = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                    StartTime = DateTime.Parse(reader.GetString(6), null, DateTimeStyles.RoundtripKind),
+                    EndTime = DateTime.Parse(reader.GetString(7), null, DateTimeStyles.RoundtripKind)
                 });
             }
             return segments;

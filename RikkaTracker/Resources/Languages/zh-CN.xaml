@@ -98,18 +98,19 @@
     <sys:String x:Key="StrExportNoAppSelected">请至少勾选一个要导出的应用。</sys:String>
     <!-- Web Monitor / Browser Extension -->
     <sys:String x:Key="StrBrowserMonitor">浏览器监控</sys:String>
-    <sys:String x:Key="StrBrowserMonitorDesc">通过 Chrome / Edge 扩展程序收集网页浏览数据</sys:String>
+    <sys:String x:Key="StrBrowserMonitorDesc">通过 Chrome / Edge / Firefox 扩展程序收集网页浏览数据</sys:String>
     <sys:String x:Key="StrBrowserMonitorInstallGuide">查看安装指引</sys:String>
     <sys:String x:Key="StrBrowserMonitorHideGuide">收起指引</sys:String>
     <sys:String x:Key="StrBrowserMonitorChromeStore">Chrome</sys:String>
     <sys:String x:Key="StrBrowserMonitorEdgeStore">Edge</sys:String>
+    <sys:String x:Key="StrBrowserMonitorFirefoxStore">Firefox</sys:String>
     <sys:String x:Key="StrBrowserMonitorGetFromStore">方式一：商店安装</sys:String>
     <sys:String x:Key="StrBrowserMonitorManualTitle">方式二：手动安装</sys:String>
     <sys:String x:Key="StrBrowserMonitorManualStep1">1. 前往 GitHub Releases 页面下载 "RikkaTracker Sentry.zip"</sys:String>
     <sys:String x:Key="StrBrowserMonitorManualStep2">2. 将压缩包解压到本地文件夹（确保内部有 extension 目录）</sys:String>
-    <sys:String x:Key="StrBrowserMonitorManualStep3">3. 打开 Chrome/Edge 浏览器，进入扩展管理页面 (chrome://extensions 或 edge://extensions)</sys:String>
-    <sys:String x:Key="StrBrowserMonitorManualStep4">4. 开启右上角的"开发者模式"</sys:String>
-    <sys:String x:Key="StrBrowserMonitorManualStep5">5. 点击"加载已解压的扩展"，选择解压后得到的 extension 文件夹</sys:String>
+    <sys:String x:Key="StrBrowserMonitorManualStep3">3. Chrome/Edge：进入扩展管理页面 (chrome://extensions 或 edge://extensions)；Firefox：打开 about:debugging → "此 Firefox"</sys:String>
+    <sys:String x:Key="StrBrowserMonitorManualStep4">4. Chrome/Edge：开启右上角的"开发者模式"；Firefox：无需开启</sys:String>
+    <sys:String x:Key="StrBrowserMonitorManualStep5">5. Chrome/Edge：点击"加载已解压的扩展"；Firefox：点击"临时载入附加组件"（Firefox 重启后需重新加载）</sys:String>
     <sys:String x:Key="StrBrowserMonitorOpenRelease">打开 GitHub Releases</sys:String>
     <sys:String x:Key="StrBrowserMonitorConnected">浏览器扩展已连接</sys:String>
     <sys:String x:Key="StrBrowserMonitorDisconnected">浏览器扩展未连接</sys:String>

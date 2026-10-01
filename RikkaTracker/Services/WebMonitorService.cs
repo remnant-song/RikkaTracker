@@ -139,6 +139,7 @@ namespace RikkaTracker.Services
                     Domain = UrlHelper.GetDomain(data.Url),
                     Title = data.Title ?? string.Empty,
                     Icon = data.Icon ?? string.Empty,
+                    Browser = data.Browser ?? string.Empty,
                     StartTime = activeTime,
                     EndTime = activeTime.AddSeconds(data.Duration)
                 };
@@ -161,6 +162,7 @@ namespace RikkaTracker.Services
                     Url = segment.Url,
                     Domain = segment.Domain,
                     Title = segment.Title,
+                    BrowserName = segment.Browser,
                     StartTime = segment.StartTime,
                     EndTime = segment.EndTime
                 };

@@ -9,6 +9,7 @@ namespace RikkaTracker.Core.Models.WebSentry
         public string Icon { get; set; } = string.Empty;
         public int ActiveTime { get; set; }
         public int Duration { get; set; }
+        public string Browser { get; set; } = string.Empty;
         public DateTime ActiveDateTime
         {
             get
