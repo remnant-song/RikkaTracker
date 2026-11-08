@@ -67,7 +67,8 @@
                 <ScrollViewer x:Name="HeaderScroller" Grid.Column="0" Grid.Row="1" 
                               VerticalScrollBarVisibility="Hidden" 
                               HorizontalScrollBarVisibility="Disabled"
-                              VerticalAlignment="Stretch">
+                              VerticalAlignment="Stretch"
+                              ScrollChanged="HeaderScroller_ScrollChanged">
                     <controls:GanttChart ItemsSource="{Binding GanttSegments}" 
                                          DisplayMode="Header"
                                          ShowRowBadges="{Binding ShowRowBadges}"
