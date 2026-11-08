@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Threading;
+using RikkaTracker.Core.Models;
 using RikkaTracker.Services;
 
 namespace RikkaTracker.Core.Monitor
@@ -42,7 +43,7 @@ namespace RikkaTracker.Core.Monitor
 
         public void Start()
         {
-            _logger.Info("Starting ProcessMonitor scan loop...");
+            _logger.Info("Starting ProcessMonitor scan loop...", LogCategory.Monitor);
             try 
             {
                 _pidNames = GetCurrentPidNames();
@@ -50,13 +51,13 @@ namespace RikkaTracker.Core.Monitor
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to perform initial process scan.", ex);
+                _logger.Error("Failed to perform initial process scan.", ex, LogCategory.Monitor);
             }
         }
 
         public void Stop()
         {
-            _logger.Info("Stopping ProcessMonitor...");
+            _logger.Info("Stopping ProcessMonitor...", LogCategory.Monitor);
             _scanTimer.Stop();
         }
 
@@ -99,7 +100,7 @@ namespace RikkaTracker.Core.Monitor
             }
             catch (Exception ex)
             {
-                _logger.Error("Error during ProcessMonitor scan tick.", ex);
+                _logger.Error("Error during ProcessMonitor scan tick.", ex, LogCategory.Monitor);
             }
         }
 
@@ -123,13 +124,13 @@ namespace RikkaTracker.Core.Monitor
                     }
                     catch (Exception ex)
                     {
-                        _logger.Warning($"Unexpected error scanning process {pid}: {ex.Message}");
+                        _logger.Warning($"Unexpected error scanning process {pid}: {ex.Message}", LogCategory.Monitor);
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error("Critical failure in GetCurrentPidNames.", ex);
+                _logger.Error("Critical failure in GetCurrentPidNames.", ex, LogCategory.Monitor);
             }
             
             return result;

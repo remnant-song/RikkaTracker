@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using RikkaTracker.ViewModels;
@@ -7,6 +8,7 @@ using Hardcodet.Wpf.TaskbarNotification;
 using System.Windows.Controls;
 using RikkaTracker.Core.Monitor;
 using RikkaTracker.Core.Data;
+using RikkaTracker.Core.Models;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using RikkaTracker.Controls;
@@ -101,6 +103,15 @@ namespace RikkaTracker
             base.OnStartup(e);
             _logger?.Info("--- RikkaTracker Startup ---");
 
+            /*
+             * @Author: trae + GLM-5.2
+             * @Date: 2026-06-30
+             * @Desc: 从配置文件加载日志系统配置，覆盖默认值。
+             *        在 ConfigService 初始化后立即应用，确保后续所有日志
+             *        都遵从用户配置的级别和策略。
+             */
+            ApplyLogConfiguration(configService.Config);
+
             // Initialize Tray Icon
             _notifyIcon = new TaskbarIcon();
             _notifyIcon.IconSource = new System.Windows.Media.Imaging.BitmapImage(
@@ -154,15 +165,15 @@ namespace RikkaTracker
             activityTracker.AppActivityChanged += (s, args) =>
             {
                 // 日志记录级别调整为 Info 以便追踪，但在生产环境下可以根据需要调低
-                _logger?.Info($"[Activity] {args.ProcessName} -> {args.NewStatus} | {args.WindowTitle}");
+                _logger?.Info($"[Activity] {args.ProcessName} -> {args.NewStatus} | {args.WindowTitle}", LogCategory.Monitor);
             };
             activityTracker.Start();
 
             var processMonitor = ServiceProvider.GetRequiredService<IProcessMonitor>();
-            processMonitor.ProcessStarted += (s, args) => _logger?.Info($"[Process] Started: {args.ProcessName}");
+            processMonitor.ProcessStarted += (s, args) => _logger?.Info($"[Process] Started: {args.ProcessName}", LogCategory.Monitor);
             processMonitor.ProcessExited += (s, args) =>
             {
-                _logger?.Info($"[Process] Exited: {args.ProcessName}");
+                _logger?.Info($"[Process] Exited: {args.ProcessName}", LogCategory.Monitor);
                 logStore.CloseProcess(args.ProcessName, DateTime.Now);
             };
             processMonitor.Start();
@@ -177,7 +188,7 @@ namespace RikkaTracker
                 {
                     var webMonitor = ServiceProvider.GetRequiredService<IWebMonitorService>();
                     webMonitor.WebUsageReceived += (usage) =>
-                        _logger?.Info($"[Web] {usage.Domain} | {usage.Title} | {usage.Duration.TotalSeconds:F0}s");
+                        _logger?.Info($"[Web] {usage.Domain} | {usage.Title} | {usage.Duration.TotalSeconds:F0}s", LogCategory.Web);
                     webMonitor.Start();
                 }
             }
@@ -393,6 +404,53 @@ namespace RikkaTracker
                         .AddSkiaSharp()
                         .AddLightTheme());
                 _isLiveChartsConfigured = true;
+            }
+        }
+
+        /*
+         * @Author: trae + GLM-5.2
+         * @Date: 2026-06-30
+         * @Desc: 将 AppConfig 中的日志配置应用到 ILoggerService 实例。
+         *        在 OnStartup 中配置加载完成后调用。
+         */
+        private void ApplyLogConfiguration(Models.AppConfig config)
+        {
+            if (_logger == null) return;
+
+            try
+            {
+                // 应用日志级别（配置中存的是 int）
+                var level = (LogLevel)config.LogLevel;
+                if (Enum.IsDefined(typeof(LogLevel), level))
+                {
+                    _logger.MinimumLevel = level;
+                }
+                else
+                {
+                    _logger.Warning($"Invalid LogLevel in config: {config.LogLevel}, using default Info.");
+                    _logger.MinimumLevel = LogLevel.Info;
+                }
+
+                // 应用日志保留天数
+                if (config.LogRetentionDays > 0)
+                {
+                    _logger.LogRetentionDays = config.LogRetentionDays;
+                }
+
+                // 应用日志文件大小上限
+                if (config.LogMaxFileSizeMb > 0)
+                {
+                    _logger.LogMaxFileSizeMb = config.LogMaxFileSizeMb;
+                }
+
+                _logger.Debug($"Log configuration applied: Level={_logger.MinimumLevel}, " +
+                              $"Retention={_logger.LogRetentionDays}d, MaxSize={_logger.LogMaxFileSizeMb}MB",
+                              LogCategory.System);
+            }
+            catch (Exception ex)
+            {
+                // 日志配置应用失败不应阻止启动
+                Debug.WriteLine($"[App] Failed to apply log configuration: {ex.Message}");
             }
         }
 

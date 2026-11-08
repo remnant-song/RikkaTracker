@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
+using RikkaTracker.Core.Models;
 using RikkaTracker.Services;
 
 namespace RikkaTracker.Core.Monitor
@@ -81,7 +82,7 @@ namespace RikkaTracker.Core.Monitor
         {
             try 
             {
-                _logger.Info("Initializing AppActivityTracker...");
+                _logger.Info("Initializing AppActivityTracker...", LogCategory.Monitor);
                 _winEventDelegate = new Win32Api.WinEventDelegate(WinEventProc);
                 _hHook = Win32Api.SetWinEventHook(
                     Win32Api.EVENT_SYSTEM_FOREGROUND,
@@ -93,22 +94,22 @@ namespace RikkaTracker.Core.Monitor
 
                 if (_hHook == IntPtr.Zero)
                 {
-                    _logger.Error("Failed to set WinEventHook. Monitoring will not work.");
+                    _logger.Error("Failed to set WinEventHook. Monitoring will not work.", null, LogCategory.Monitor);
                     return;
                 }
 
-                _logger.Info("WinEventHook successfully established.");
+                _logger.Info("WinEventHook successfully established.", LogCategory.Monitor);
                 UpdateForegroundStatus();
             }
             catch (Exception ex)
             {
-                _logger.Error("Critical error during AppActivityTracker startup.", ex);
+                _logger.Error("Critical error during AppActivityTracker startup.", ex, LogCategory.Monitor);
             }
         }
 
         public void Stop()
         {
-            _logger.Info("Stopping AppActivityTracker...");
+            _logger.Info("Stopping AppActivityTracker...", LogCategory.Monitor);
             if (_hHook != IntPtr.Zero)
             {
                 Win32Api.UnhookWinEvent(_hHook);
@@ -165,14 +166,14 @@ namespace RikkaTracker.Core.Monitor
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error($"Error in UI dispatcher during WinEvent {eventType}.", ex);
+                        _logger.Error($"Error in UI dispatcher during WinEvent {eventType}.", ex, LogCategory.Monitor);
                     }
                 });
             }
             catch (Exception ex)
             {
                 // 此处必须极度稳健，不能抛出任何异常
-                _logger.Error("Fatal error in WinEventProc callback.", ex);
+                _logger.Error("Fatal error in WinEventProc callback.", ex, LogCategory.Monitor);
             }
         }
 
@@ -197,12 +198,12 @@ namespace RikkaTracker.Core.Monitor
             string processName = GetProcessName(newPid);
             
             // 记录焦点切换日志
-            _logger.Info($"Focus changed to: {processName} (PID: {newPid}) | Title: {title}");
+            _logger.Info($"Focus changed to: {processName} (PID: {newPid}) | Title: {title}", LogCategory.Monitor);
 
             // 过滤系统组件和非应用窗口（如桌面、任务栏、锁屏等）
             if (!Win32Api.IsAppWindow(hwnd))
             {
-                _logger.Info($"Ignoring non-app window for focus tracking: {processName} (HWND: {hwnd})");
+                _logger.Info($"Ignoring non-app window for focus tracking: {processName} (HWND: {hwnd})", LogCategory.Monitor);
                 if (_currentForegroundPid != 0)
                 {
                     UpdateProcessStatus(_currentForegroundPid, string.Empty, ActivityStatus.ForegroundInactive);
@@ -216,7 +217,7 @@ namespace RikkaTracker.Core.Monitor
 
             if (IsSystemUI(newPid, title) || _filterEngine.ShouldIgnore(processName))
             {
-                _logger.Info($"Ignoring system UI or filtered process: {processName}");
+                _logger.Info($"Ignoring system UI or filtered process: {processName}", LogCategory.Monitor);
                 return;
             }
 
@@ -342,7 +343,7 @@ namespace RikkaTracker.Core.Monitor
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"Failed to record transition to database for {state.ProcessName}.", ex);
+                    _logger.Error($"Failed to record transition to database for {state.ProcessName}.", ex, LogCategory.Monitor);
                 }
 
                 AppActivityChanged?.Invoke(this, new AppActivityChangedEventArgs
@@ -394,7 +395,7 @@ namespace RikkaTracker.Core.Monitor
             }
             catch (Exception ex)
             {
-                _logger.Error("Error in IdleTimerTick.", ex);
+                _logger.Error("Error in IdleTimerTick.", ex, LogCategory.Monitor);
             }
         }
 
