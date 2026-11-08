@@ -39,10 +39,10 @@
   <ItemGroup>
     <Resource Include="Assets\app-icon.ico" />
     <Resource Include="Assets\app-icon.png" />
-    <!-- Segoe Fluent Icons font for Win10 compatibility.
-         Copy Segoe Fluent Icons.ttf from C:\Windows\Fonts\ on a Windows 11
-         machine into the Assets folder before building. -->
-    <Resource Include="Assets\SegoeFluentIcons.ttf" Condition="Exists('Assets\SegoeFluentIcons.ttf')" />
+    <!-- Segoe Fluent Icons font, embedded so icon glyphs render on Win10
+         where this font is not installed. Missing file must fail the build
+         rather than silently produce tofu icons. -->
+    <Resource Include="Assets\SegoeFluentIcons.ttf" />
   </ItemGroup>
 </Project>
 

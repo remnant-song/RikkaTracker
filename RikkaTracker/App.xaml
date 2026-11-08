@@ -21,10 +21,9 @@
             <conv:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
             <conv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
 
-            <!-- Segoe Fluent Icons embedded fallback for Win10.
-                 Copy SegoeFluentIcons.ttf from C:\Windows\Fonts\ on Win11
-                 into the Assets folder. -->
-            <FontFamily x:Key="SymbolFont">pack://application:,,,/Assets/SegoeFluentIcons.ttf#Segoe Fluent Icons, Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
+            <!-- Segoe Fluent Icons embedded as application resource so icon
+                 glyphs render on Win10, where this font is not installed. -->
+            <FontFamily x:Key="SymbolFont">pack://application:,,,/Assets/SegoeFluentIcons.ttf#Segoe Fluent Icons</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -178,6 +178,7 @@ namespace RikkaTracker.ViewModels
                                     SegmentType = "Web",
                                     Domain = s.Domain,
                                     Url = s.Url,
+                                    Browser = s.Browser,
                                     Icon = LoadFaviconSource(s.Icon) ?? GlobeIcon.Source
                                 };
                             }
@@ -201,6 +202,7 @@ namespace RikkaTracker.ViewModels
                                         SegmentType = "Web",
                                         Domain = s.Domain,
                                         Url = s.Url,
+                                        Browser = s.Browser,
                                         Icon = LoadFaviconSource(s.Icon) ?? GlobeIcon.Source
                                     };
                                 }

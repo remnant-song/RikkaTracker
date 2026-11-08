@@ -364,3 +364,6 @@ FodyWeavers.xsd
 RikkaTracker/doc/
 /test
 /assets/resources
+
+# web-ext build output
+WebExtensions/**/web-ext-artifacts/

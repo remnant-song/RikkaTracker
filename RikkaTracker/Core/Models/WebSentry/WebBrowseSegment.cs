@@ -9,6 +9,7 @@ namespace RikkaTracker.Core.Models.WebSentry
         public string Domain { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string Icon { get; set; } = string.Empty;
+        public string Browser { get; set; } = string.Empty;
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public TimeSpan Duration => EndTime - StartTime;

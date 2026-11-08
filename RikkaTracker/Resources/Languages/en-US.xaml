@@ -98,18 +98,19 @@
     <sys:String x:Key="StrExportNoAppSelected">Please select at least one application to export.</sys:String>
     <!-- Web Monitor / Browser Extension -->
     <sys:String x:Key="StrBrowserMonitor">Browser Monitor</sys:String>
-    <sys:String x:Key="StrBrowserMonitorDesc">Collect web browsing data via the Chrome / Edge extension</sys:String>
+    <sys:String x:Key="StrBrowserMonitorDesc">Collect web browsing data via the Chrome / Edge / Firefox extension</sys:String>
     <sys:String x:Key="StrBrowserMonitorInstallGuide">View Installation Guide</sys:String>
     <sys:String x:Key="StrBrowserMonitorHideGuide">Hide Guide</sys:String>
     <sys:String x:Key="StrBrowserMonitorChromeStore">Chrome Web Store</sys:String>
     <sys:String x:Key="StrBrowserMonitorEdgeStore">Edge Add-ons Store</sys:String>
+    <sys:String x:Key="StrBrowserMonitorFirefoxStore">Firefox Add-ons</sys:String>
     <sys:String x:Key="StrBrowserMonitorGetFromStore">Method 1: Install from Store</sys:String>
     <sys:String x:Key="StrBrowserMonitorManualTitle">Method 2: Manual Install</sys:String>
     <sys:String x:Key="StrBrowserMonitorManualStep1">1. Go to GitHub Releases and download "RikkaTracker Sentry.zip"</sys:String>
     <sys:String x:Key="StrBrowserMonitorManualStep2">2. Extract the zip to a local folder (ensure the "extension" directory is inside)</sys:String>
-    <sys:String x:Key="StrBrowserMonitorManualStep3">3. Open Chrome/Edge and go to the extensions page (chrome://extensions or edge://extensions)</sys:String>
-    <sys:String x:Key="StrBrowserMonitorManualStep4">4. Enable "Developer mode" in the top-right corner</sys:String>
-    <sys:String x:Key="StrBrowserMonitorManualStep5">5. Click "Load unpacked" and select the extracted "extension" folder</sys:String>
+    <sys:String x:Key="StrBrowserMonitorManualStep3">3. Chrome/Edge: open the extensions page (chrome://extensions or edge://extensions); Firefox: open about:debugging &gt; "This Firefox"</sys:String>
+    <sys:String x:Key="StrBrowserMonitorManualStep4">4. Chrome/Edge: enable "Developer mode" in the top-right corner; Firefox: not required</sys:String>
+    <sys:String x:Key="StrBrowserMonitorManualStep5">5. Chrome/Edge: click "Load unpacked"; Firefox: click "Load Temporary Add-on" (must be reloaded after Firefox restarts)</sys:String>
     <sys:String x:Key="StrBrowserMonitorOpenRelease">Open GitHub Releases</sys:String>
     <sys:String x:Key="StrBrowserMonitorConnected">Extension connected</sys:String>
     <sys:String x:Key="StrBrowserMonitorDisconnected">Extension disconnected</sys:String>

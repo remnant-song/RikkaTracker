@@ -382,6 +382,7 @@ namespace RikkaTracker.ViewModels
         // @Desc: 浏览器扩展商店及 GitHub Release URL 常量
         private const string ChromeExtensionStoreUrl = "https://chrome.google.com/webstore/detail/rikkatracker-sentry/...";
         private const string EdgeExtensionStoreUrl = "https://microsoftedge.microsoft.com/addons/detail/rikkatracker-sentry/...";
+        private const string FirefoxExtensionStoreUrl = "https://addons.mozilla.org/firefox/addon/rikkatracker-sentry/";
         private const string GitHubReleaseUrl = "https://github.com/remnant-song/RikkaTrack/releases/latest";
 
         // @Author: trae + deepseek-V4-pro
@@ -427,6 +428,24 @@ namespace RikkaTracker.ViewModels
             catch (Exception ex)
             {
                 _logger.Error("Failed to open Edge Add-ons Store.", ex);
+            }
+        }
+
+        // @Desc: 打开 Firefox 附加组件商店（AMO）
+        [RelayCommand]
+        private void OpenFirefoxStore()
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = FirefoxExtensionStoreUrl,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Failed to open Firefox Add-ons Store.", ex);
             }
         }
 
