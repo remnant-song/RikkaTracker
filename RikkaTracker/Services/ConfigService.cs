@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using RikkaTracker.Core.Models;
 using RikkaTracker.Models;
 
 namespace RikkaTracker.Services
@@ -43,14 +44,14 @@ namespace RikkaTracker.Services
                 if (!Directory.Exists(configDir))
                 {
                     Directory.CreateDirectory(configDir);
-                    _logger.Info($"Created config directory at: {configDir}");
+                    _logger.Info($"Created config directory at: {configDir}", LogCategory.Config);
                 }
                 _configFilePath = Path.Combine(configDir, "config.json");
                 Load();
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to initialize ConfigService path structure.", ex);
+                _logger.Error("Failed to initialize ConfigService path structure.", ex, LogCategory.Config);
                 // 即使失败也确保 config 对象不为空
                 _config = new AppConfig();
                 _configFilePath = string.Empty; 
@@ -61,7 +62,7 @@ namespace RikkaTracker.Services
         {
             if (string.IsNullOrEmpty(_configFilePath) || !File.Exists(_configFilePath))
             {
-                _logger.Info("Config file not found, initializing with defaults.");
+                _logger.Info("Config file not found, initializing with defaults.", LogCategory.Config);
                 _config = new AppConfig();
                 // 默认数据路径设为安装目录下的 Data 文件夹
                 _config.DataStoragePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
@@ -75,23 +76,23 @@ namespace RikkaTracker.Services
                 var deserialized = JsonSerializer.Deserialize<AppConfig>(json);
                 if (deserialized == null)
                 {
-                    _logger.Warning("Config file is empty or invalid. Resetting to defaults.");
+                    _logger.Warning("Config file is empty or invalid. Resetting to defaults.", LogCategory.Config);
                     _config = new AppConfig();
                 }
                 else
                 {
                     _config = deserialized;
-                    _logger.Info("Configuration loaded successfully.");
+                    _logger.Info("Configuration loaded successfully.", LogCategory.Config);
                 }
             }
             catch (JsonException jex)
             {
-                _logger.Error("Config file is corrupted (JSON Error). Falling back to defaults.", jex);
+                _logger.Error("Config file is corrupted (JSON Error). Falling back to defaults.", jex, LogCategory.Config);
                 _config = new AppConfig();
             }
             catch (Exception ex)
             {
-                _logger.Error("Unexpected error while loading config.", ex);
+                _logger.Error("Unexpected error while loading config.", ex, LogCategory.Config);
                 _config = new AppConfig();
             }
         }
@@ -111,17 +112,17 @@ namespace RikkaTracker.Services
             {
                 string json = JsonSerializer.Serialize(_config, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(_configFilePath, json);
-                _logger.Info("Configuration saved successfully.");
+                _logger.Info("Configuration saved successfully.", LogCategory.Config);
                 // 通知所有订阅者配置已变更
                 ConfigChanged?.Invoke();
             }
             catch (UnauthorizedAccessException uex)
             {
-                _logger.Error($"Permission denied while saving config to {_configFilePath}. Try running as admin or moving the app folder.", uex);
+                _logger.Error($"Permission denied while saving config to {_configFilePath}. Try running as admin or moving the app folder.", uex, LogCategory.Config);
             }
             catch (Exception ex)
             {
-                _logger.Error("Failed to save configuration.", ex);
+                _logger.Error("Failed to save configuration.", ex, LogCategory.Config);
             }
         }
     }

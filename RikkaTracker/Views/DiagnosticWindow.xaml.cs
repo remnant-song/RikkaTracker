@@ -7,6 +7,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using RikkaTracker.Core.Monitor;
+using RikkaTracker.Helpers;
+using Wpf.Ui.Controls;
 
 namespace RikkaTracker.Views
 {
@@ -23,7 +25,7 @@ namespace RikkaTracker.Views
         public Brush StatusBrush { get; set; } = Brushes.Gray;
     }
 
-    public partial class DiagnosticWindow : Wpf.Ui.Controls.FluentWindow
+    public partial class DiagnosticWindow : FluentWindow
     {
         private readonly IAppActivityTracker _activityTracker;
         private readonly List<DiagnosticLogEntry> _allEntries = new();
@@ -34,7 +36,15 @@ namespace RikkaTracker.Views
         {
             InitializeComponent();
             _activityTracker = activityTracker;
-            
+
+            // Fall back to solid themed background on Windows 10
+            // (Mica/Acrylic legacy fallbacks are unreliable across builds).
+            if (!PlatformHelper.IsWindows11OrNewer && WindowBackdropType == WindowBackdropType.Mica)
+            {
+                WindowBackdropType = WindowBackdropType.None;
+                SetResourceReference(BackgroundProperty, "ApplicationBackgroundBrush");
+            }
+
             // Apply current theme to ensure DWM dark mode adaptation
             Wpf.Ui.Appearance.ApplicationThemeManager.Apply(this);
             
@@ -49,6 +59,7 @@ namespace RikkaTracker.Views
             // Initial Topmost state button style
             UpdateTopmostButtonAppearance();
         }
+
 
         private void OnAppActivityChanged(object? sender, AppActivityChangedEventArgs e)
         {

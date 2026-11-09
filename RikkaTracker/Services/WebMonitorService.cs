@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using Fleck;
 using RikkaTracker.Core.Librarys;
+using RikkaTracker.Core.Models;
 using RikkaTracker.Core.Models.WebSentry;
 using RikkaTracker.Models;
 
@@ -63,14 +64,14 @@ namespace RikkaTracker.Services
                     socket.OnOpen = () =>
                     {
                         lock (_lock) { _clients.Add(socket); }
-                        _logger.Info($"[WebMonitor] Client connected ({_clients.Count} total)");
+                        _logger.Info($"[WebMonitor] Client connected ({_clients.Count} total)", LogCategory.Web);
                         ConnectionStatusChanged?.Invoke(true);
                     };
 
                     socket.OnClose = () =>
                     {
                         lock (_lock) { _clients.Remove(socket); }
-                        _logger.Info($"[WebMonitor] Client disconnected ({_clients.Count} total)");
+                        _logger.Info($"[WebMonitor] Client disconnected ({_clients.Count} total)", LogCategory.Web);
                         ConnectionStatusChanged?.Invoke(false);
                     };
 
@@ -82,7 +83,7 @@ namespace RikkaTracker.Services
                 });
 
                 _isRunning = true;
-                _logger.Info($"[WebMonitor] WebSocket server started on ws://127.0.0.1:{port}");
+                _logger.Info($"[WebMonitor] WebSocket server started on ws://127.0.0.1:{port}", LogCategory.Web);
 
                 // Actual path is determined by the extension connecting to the root
                 // Fleck doesn't support path-based routing natively, so the extension
@@ -90,7 +91,7 @@ namespace RikkaTracker.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("[WebMonitor] Failed to start WebSocket server", ex);
+                _logger.Error("[WebMonitor] Failed to start WebSocket server", ex, LogCategory.Web);
             }
         }
 
@@ -112,11 +113,11 @@ namespace RikkaTracker.Services
                 _server?.Dispose();
                 _server = null;
                 _isRunning = false;
-                _logger.Info("[WebMonitor] WebSocket server stopped");
+                _logger.Info("[WebMonitor] WebSocket server stopped", LogCategory.Web);
             }
             catch (Exception ex)
             {
-                _logger.Error("[WebMonitor] Error stopping WebSocket server", ex);
+                _logger.Error("[WebMonitor] Error stopping WebSocket server", ex, LogCategory.Web);
             }
         }
 
@@ -139,6 +140,7 @@ namespace RikkaTracker.Services
                     Domain = UrlHelper.GetDomain(data.Url),
                     Title = data.Title ?? string.Empty,
                     Icon = data.Icon ?? string.Empty,
+                    Browser = data.Browser ?? string.Empty,
                     StartTime = activeTime,
                     EndTime = activeTime.AddSeconds(data.Duration)
                 };
@@ -152,7 +154,7 @@ namespace RikkaTracker.Services
                     if (!string.IsNullOrEmpty(localPath))
                     {
                         await _webDataService.UpdateDomainFaviconAsync(segment.Domain, localPath);
-                        _logger.Info($"[Favicon] Updated DB for domain '{segment.Domain}' -> {localPath}");
+                        _logger.Info($"[Favicon] Updated DB for domain '{segment.Domain}' -> {localPath}", LogCategory.Web);
                     }
                 });
 
@@ -161,11 +163,12 @@ namespace RikkaTracker.Services
                     Url = segment.Url,
                     Domain = segment.Domain,
                     Title = segment.Title,
+                    BrowserName = segment.Browser,
                     StartTime = segment.StartTime,
                     EndTime = segment.EndTime
                 };
 
-                _logger.Info($"[Web] {usage.Domain} | {usage.Duration.TotalSeconds:F0}s");
+                _logger.Info($"[Web] {usage.Domain} | {usage.Duration.TotalSeconds:F0}s", LogCategory.Web);
                 WebUsageReceived?.Invoke(usage);
             }
             catch (JsonException)
@@ -174,7 +177,7 @@ namespace RikkaTracker.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("[WebMonitor] Error processing message", ex);
+                _logger.Error("[WebMonitor] Error processing message", ex, LogCategory.Web);
             }
         }
     }

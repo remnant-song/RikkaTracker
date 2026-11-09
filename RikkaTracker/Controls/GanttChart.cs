@@ -174,7 +174,10 @@ namespace RikkaTracker.Controls
             _children.Add(_mainVisual);
 
             _internalToolTip = new System.Windows.Controls.ToolTip();
-            _internalToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Mouse;
+            // RelativePoint + PlacementTarget：PlacementMode.Mouse 的 ToolTip 打开后
+            // 位置固定，无法在保持打开时跟随鼠标更新，导致详细信息与色块错位
+            _internalToolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.RelativePoint;
+            _internalToolTip.PlacementTarget = this;
             _internalToolTip.Background = Brushes.Transparent;
             _internalToolTip.BorderThickness = new Thickness(0);
             _internalToolTip.Padding = new Thickness(0);
@@ -535,6 +538,7 @@ namespace RikkaTracker.Controls
                                      $"标题: {hit.WindowTitle}\n" +
                                      $"时间: {hit.Start:HH:mm:ss} - {hit.End:HH:mm:ss}\n" +
                                      $"持续: {hit.Duration:hh\\:mm\\:ss}\n" +
+                                     (string.IsNullOrEmpty(hit.Browser) ? "" : $"浏览器: {hit.Browser}\n") +
                                      $"网址: {hit.Url}";
                 }
                 else
@@ -563,10 +567,18 @@ namespace RikkaTracker.Controls
                 
                 _internalToolTip.Content = tooltipContent;
                 _internalToolTip.IsOpen = true;
-                
-                // 强制更新位置
-                _internalToolTip.HorizontalOffset = 10;
-                _internalToolTip.VerticalOffset = 10;
+
+                // 每次移动都按当前鼠标位置重设偏移，使打开中的 ToolTip 跟随鼠标；
+                // 靠近右/下边缘时翻转到鼠标另一侧，避免被截断。
+                // 首次打开时 ActualWidth/Height 尚为 0，用估算值兜底
+                double tipW = _internalToolTip.ActualWidth > 0 ? _internalToolTip.ActualWidth : 340;
+                double tipH = _internalToolTip.ActualHeight > 0 ? _internalToolTip.ActualHeight : 150;
+                double x = pos.X + 16;
+                double y = pos.Y + 18;
+                if (x + tipW > ActualWidth) x = pos.X - tipW - 12;
+                if (y + tipH > ActualHeight) y = pos.Y - tipH - 12;
+                _internalToolTip.HorizontalOffset = x;
+                _internalToolTip.VerticalOffset = y;
             }
             else
             {

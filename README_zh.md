@@ -33,8 +33,9 @@
 - 极致轻量化运行优化，摒弃冗余功能与低效渲染逻辑，基于原生 WPF 高性能渲染方案开发。
 - 程序后台常驻内存占用极低，CPU 占用几乎可忽略不计，全程无弹窗、无后台冗余进程、无网络驻留请求。完美适配日常长期后台静默运行，不会对电脑性能、游戏帧率、办公软件运行造成任何影响，真正实现无感式时间追踪。
 
-### 4. 网页浏览追踪与 Chrome 扩展
+### 4. 网页浏览追踪与浏览器扩展
 - 支持通过浏览器扩展实时追踪浏览器活跃页面，记录浏览时长。
+- 提供 Chrome / Edge / Firefox 三种扩展（见仓库 `WebExtensions/` 目录；Firefox 版通过 about:debugging → "临时载入附加组件" 加载，或从 AMO 商店安装）。
 - 域名自动映射为友好网站名称（如 `google.com` → "Google"），提升界面可读性。
 - 视图模式可在"仅应用 / 仅网页 / 合并"之间切换，灵活查看不同维度数据。
 
@@ -42,11 +43,13 @@
 
 ![RikkaTracker 概览页](public/概览页.png)
 
-![RikkaTracker 时间轴](public/时间轴.png)
+![RikkaTracker 时间轴](public/0.5.2/时间轴.png)
 
 ![RikkaTracker 低资源占用](public/低资源占用.png)
 
 ![RikkaTracker 策略规则](public/策略规则.png)
+
+![RikkaTracker 设置](public/0.5.2/设置.png)
 
 
 ---

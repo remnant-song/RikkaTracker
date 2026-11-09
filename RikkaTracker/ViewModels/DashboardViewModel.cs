@@ -9,6 +9,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using LiveChartsCore.Defaults;
 using SkiaSharp;
+using RikkaTracker.Helpers;
 using RikkaTracker.Services;
 
 namespace RikkaTracker.ViewModels
@@ -178,13 +179,34 @@ namespace RikkaTracker.ViewModels
             };
         }
 
+        /*
+         * @Author: trae + default-model
+         * @Date:   2026-06-30
+         * @Modify: 2026-06-30 – 重构：提取共享工具方法至 ChartColorHelper；
+         *          暗色模式下网页柱体增加去饱和处理（DesaturateSkColor），
+         *          使其与强调色应用柱体有明显视觉区分。
+         */
         private void UpdateChartColors(string theme)
         {
-            var isDark = theme.Equals("Dark", StringComparison.OrdinalIgnoreCase);
-            var labelColor = isDark ? new SKColor(220, 220, 220) : new SKColor(80, 80, 80);
-            var separatorColor = isDark ? new SKColor(255, 255, 255, 30) : new SKColor(0, 0, 0, 15);
-            var barColor = isDark ? new SKColor(244, 114, 182) : new SKColor(14, 165, 233);
-            var webBarColor = isDark ? new SKColor(80, 200, 120) : new SKColor(34, 139, 34);
+            var isDark = ChartColorHelper.IsThemeEffectivelyDark(theme);
+            var labelColor = isDark
+                ? new SKColor(220, 220, 220)
+                : new SKColor(80, 80, 80);
+            var separatorColor = isDark
+                ? new SKColor(255, 255, 255, 30)
+                : new SKColor(0, 0, 0, 15);
+
+            // Derive bar colors from the Windows accent color so charts follow the palette
+            var accent = ChartColorHelper.GetAccentSkColor();
+            // App bars: accent itself (brightened a touch in dark mode for contrast)
+            var barColor = isDark
+                ? ChartColorHelper.BrightenSkColor(accent, 0.20f)
+                : accent;
+            // Web bars: shift hue (light mode) or desaturate accent (dark mode)
+            // for visual distinction from app bars.
+            var webBarColor = isDark
+                ? ChartColorHelper.DesaturateSkColor(accent, 0.40f)
+                : ChartColorHelper.ShiftHueSkColor(accent, 0.15f);
 
             (_axisLabelPaint as IDisposable)?.Dispose();
             (_axisSeparatorPaint as IDisposable)?.Dispose();
@@ -192,7 +214,8 @@ namespace RikkaTracker.ViewModels
             (_webColumnFillPaint as IDisposable)?.Dispose();
 
             _axisLabelPaint = new SolidColorPaint(labelColor);
-            _axisSeparatorPaint = new SolidColorPaint(separatorColor) { StrokeThickness = 1 };
+            _axisSeparatorPaint = new SolidColorPaint(separatorColor)
+                { StrokeThickness = 1 };
             _columnFillPaint = new SolidColorPaint(barColor);
             _webColumnFillPaint = new SolidColorPaint(webBarColor);
         }

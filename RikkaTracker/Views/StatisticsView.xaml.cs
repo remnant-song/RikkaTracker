@@ -6,6 +6,8 @@ namespace RikkaTracker.Views
 {
     public partial class StatisticsView : UserControl
     {
+        private bool _isSyncing;
+
         public StatisticsView()
         {
             InitializeComponent();
@@ -60,13 +62,39 @@ namespace RikkaTracker.Views
 
         private void TimelineScroller_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.VerticalChange != 0)
+            if (_isSyncing) return;
+            _isSyncing = true;
+            try
             {
-                HeaderScroller.ScrollToVerticalOffset(e.VerticalOffset);
+                if (e.VerticalChange != 0)
+                {
+                    HeaderScroller.ScrollToVerticalOffset(e.VerticalOffset);
+                }
+                if (e.HorizontalChange != 0)
+                {
+                    TimeHeaderScroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+                }
             }
-            if (e.HorizontalChange != 0)
+            finally
             {
-                TimeHeaderScroller.ScrollToHorizontalOffset(e.HorizontalOffset);
+                _isSyncing = false;
+            }
+        }
+
+        private void HeaderScroller_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_isSyncing) return;
+            _isSyncing = true;
+            try
+            {
+                if (e.VerticalChange != 0)
+                {
+                    TimelineScroller.ScrollToVerticalOffset(e.VerticalOffset);
+                }
+            }
+            finally
+            {
+                _isSyncing = false;
             }
         }
 

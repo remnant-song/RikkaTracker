@@ -12,7 +12,7 @@
     <!-- @Date: 2026-06-23 -->
     <!-- @Desc: Segoe Fluent Icons 字体资源，用于 FontIcon 标记扩展 -->
     <UserControl.Resources>
-        <FontFamily x:Key="SegoeFluentIcons">Segoe Fluent Icons</FontFamily>
+        
     </UserControl.Resources>
     <Grid Margin="20">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -47,7 +47,7 @@
                                         
                                         <!-- @Desc: Delete → \uE74D (Segoe Fluent Icons) -->
                                         <ui:Button Grid.Column="3" 
-                                                   Icon="{ui:FontIcon FontFamily={StaticResource SegoeFluentIcons}, Glyph=&#xE74D;}" 
+                                                   Icon="{ui:FontIcon FontFamily={StaticResource SymbolFont}, Glyph=&#xE74D;}" 
                                                    Appearance="Transparent" 
                                                    Command="{Binding DataContext.RemoveRuleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                                                    CommandParameter="{Binding}"/>
@@ -58,7 +58,7 @@
                         
                         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
                             <!-- @Desc: Add → \uE710 (Segoe Fluent Icons) -->
-                            <ui:Button Content="{DynamicResource StrAddRule}" Icon="{ui:FontIcon FontFamily={StaticResource SegoeFluentIcons}, Glyph=&#xE710;}" Command="{Binding AddRuleCommand}"/>
+                            <ui:Button Content="{DynamicResource StrAddRule}" Icon="{ui:FontIcon FontFamily={StaticResource SymbolFont}, Glyph=&#xE710;}" Command="{Binding AddRuleCommand}"/>
                             <ui:Button Content="{DynamicResource StrSaveAndApply}" Appearance="Primary" Margin="10,0,0,0" Command="{Binding SaveRulesCommand}"/>
                             <ui:Button Content="{DynamicResource StrResetToDefaults}" Appearance="Secondary" Margin="10,0,0,0" Command="{Binding ResetToDefaultsCommand}"/>
                         </StackPanel>

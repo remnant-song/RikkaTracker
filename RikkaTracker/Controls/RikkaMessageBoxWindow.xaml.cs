@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using RikkaTracker.Helpers;
 using Wpf.Ui.Controls;
 
 namespace RikkaTracker.Controls
@@ -12,7 +13,15 @@ namespace RikkaTracker.Controls
         public RikkaMessageBoxWindow(string message, string title, System.Windows.MessageBoxButton button, MessageBoxImage image)
         {
             InitializeComponent();
-            
+
+            // Fall back to solid themed background on Windows 10
+            // (Mica/Acrylic legacy fallbacks are unreliable across builds).
+            if (!PlatformHelper.IsWindows11OrNewer && WindowBackdropType == WindowBackdropType.Mica)
+            {
+                WindowBackdropType = WindowBackdropType.None;
+                SetResourceReference(BackgroundProperty, "ApplicationBackgroundBrush");
+            }
+
             Title = title;
             MessageText.Text = message;
 

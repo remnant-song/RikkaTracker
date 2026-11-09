@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <Version>0.5.2</Version>
+    <Version>0.5.3</Version>
     <ApplicationIcon>assets\app-icon.ico</ApplicationIcon>
     
     <!-- 默认开启单文件发布与原生库嵌入 -->
@@ -39,8 +39,13 @@
   <ItemGroup>
     <Resource Include="Assets\app-icon.ico" />
     <Resource Include="Assets\app-icon.png" />
+    <!-- Segoe Fluent Icons font, embedded so icon glyphs render on Win10
+         where this font is not installed. Missing file must fail the build
+         rather than silently produce tofu icons. -->
+    <Resource Include="Assets\SegoeFluentIcons.ttf" />
   </ItemGroup>
 </Project>
+
 
 
 

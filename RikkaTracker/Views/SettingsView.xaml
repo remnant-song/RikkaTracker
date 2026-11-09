@@ -6,12 +6,6 @@
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000">
-    <!-- @Author: trae + deepseek-V4-pro -->
-    <!-- @Date: 2026-06-23 -->
-    <!-- @Desc: Segoe Fluent Icons 字体资源，用于 FontIcon 标记扩展 -->
-    <UserControl.Resources>
-        <FontFamily x:Key="SegoeFluentIcons">Segoe Fluent Icons</FontFamily>
-    </UserControl.Resources>
     <Grid Margin="20">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
@@ -52,10 +46,14 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
-                            <ui:TextBlock Text="{DynamicResource StrDarkMode}" VerticalAlignment="Center" FontWeight="SemiBold"/>
-                            <ui:TextBlock Text="{DynamicResource StrDarkModeDesc}" FontSize="12" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
+                            <ui:TextBlock Text="{DynamicResource StrTheme}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <ui:TextBlock Text="{DynamicResource StrThemeDesc}" FontSize="12" Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"/>
                         </StackPanel>
-                        <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDarkMode}" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" SelectedValue="{Binding Theme}" SelectedValuePath="Tag" Width="150" VerticalAlignment="Center">
+                            <ComboBoxItem Content="{DynamicResource StrThemeSystem}" Tag="System"/>
+                            <ComboBoxItem Content="{DynamicResource StrThemeLight}" Tag="Light"/>
+                            <ComboBoxItem Content="{DynamicResource StrThemeDark}" Tag="Dark"/>
+                        </ComboBox>
                     </Grid>
                     <Grid Margin="0,15,0,0">
                         <Grid.ColumnDefinitions>
@@ -195,8 +193,12 @@
                                            Command="{Binding OpenChromeStoreCommand}"
                                            Margin="0,0,10,0"
                                            VerticalAlignment="Center"/>
-                                <ui:Button Content="{DynamicResource StrBrowserMonitorEdgeStore}" 
+                                <ui:Button Content="{DynamicResource StrBrowserMonitorEdgeStore}"
                                            Command="{Binding OpenEdgeStoreCommand}"
+                                           Margin="0,0,10,0"
+                                           VerticalAlignment="Center"/>
+                                <ui:Button Content="{DynamicResource StrBrowserMonitorFirefoxStore}"
+                                           Command="{Binding OpenFirefoxStoreCommand}"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
                         </StackPanel>
@@ -241,7 +243,7 @@
                     <!-- @Desc: CloudDownload → \uE9F5 (Segoe Fluent Icons) -->
                     <ui:Button Grid.Column="1" 
                                Content="{DynamicResource StrCheckUpdate}" 
-                               Icon="{ui:FontIcon FontFamily={StaticResource SegoeFluentIcons}, Glyph=&#xE9F5;}" 
+                               Icon="{ui:FontIcon FontFamily={StaticResource SymbolFont}, Glyph=&#xE9F5;}" 
                                Command="{Binding CheckForUpdateCommand}"
                                IsEnabled="{Binding IsUpdating, Converter={StaticResource InverseBooleanConverter}}"
                                VerticalAlignment="Center"/>
@@ -263,7 +265,7 @@
                         <!-- @Desc: Folder → \uE838 (Segoe Fluent Icons) -->
                         <ui:Button Grid.Column="1" 
                                    Content="{DynamicResource StrChange}" 
-                                   Icon="{ui:FontIcon FontFamily={StaticResource SegoeFluentIcons}, Glyph=&#xE838;}" 
+                                   Icon="{ui:FontIcon FontFamily={StaticResource SymbolFont}, Glyph=&#xE838;}" 
                                    Command="{Binding ChangeStoragePathCommand}"
                                    VerticalAlignment="Center"/>
                     </Grid>
@@ -281,12 +283,12 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                             <!-- @Desc: DeveloperBoard → \uEC48 (Segoe Fluent Icons) -->
                             <ui:Button Content="{DynamicResource StrOpenDiagnosticConsole}" 
-                                       Icon="{ui:FontIcon FontFamily={StaticResource SegoeFluentIcons}, Glyph=&#xEC48;}" 
+                                       Icon="{ui:FontIcon FontFamily={StaticResource SymbolFont}, Glyph=&#xEC48;}" 
                                        Command="{Binding OpenDiagnosticConsoleCommand}"
                                        Margin="0,0,10,0"/>
                             <!-- @Desc: FolderOpen → \uED25 (Segoe Fluent Icons) -->
                             <ui:Button Content="{DynamicResource StrOpenLogFolder}" 
-                                       Icon="{ui:FontIcon FontFamily={StaticResource SegoeFluentIcons}, Glyph=&#xED25;}" 
+                                       Icon="{ui:FontIcon FontFamily={StaticResource SymbolFont}, Glyph=&#xED25;}" 
                                        Command="{Binding OpenLogFolderCommand}"/>
                         </StackPanel>
                     </Grid>

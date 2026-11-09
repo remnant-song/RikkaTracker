@@ -31,7 +31,7 @@ namespace RikkaTracker.Core.Data
             _dbContext = dbContext;
             _logger = logger;
             _flushTimer = new System.Threading.Timer(async _ => await FlushQueueAsync(), null, 2000, 2000);
-            _logger.Info("SqliteLogStore initialized with batch flush every 2 seconds.");
+            _logger.Info("SqliteLogStore initialized with batch flush every 2 seconds.", LogCategory.DB);
         }
 
         public void RecordTransition(string processName, string processPath, string windowTitle, ActivityStatus newStatus, DateTime timestamp, string alias = "")
@@ -76,7 +76,7 @@ namespace RikkaTracker.Core.Data
                     seg.EndTime = timestamp;
                     QueueSegments(seg);
                     _openSegments.Remove(processName);
-                    _logger.Info($"Closed log segment for process: {processName}");
+                    _logger.Info($"Closed log segment for process: {processName}", LogCategory.DB);
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace RikkaTracker.Core.Data
             }
             catch (Exception ex)
             {
-                _logger.Error($"Failed to flush {segmentsToWrite.Count} segments to database. Re-enqueuing data.", ex);
+                _logger.Error($"Failed to flush {segmentsToWrite.Count} segments to database. Re-enqueuing data.", ex, LogCategory.DB);
                 // 失败保护：将数据放回队列，等待下次尝试
                 foreach (var seg in segmentsToWrite)
                 {
@@ -181,7 +181,7 @@ namespace RikkaTracker.Core.Data
             if (_isDisposing) return;
             _isDisposing = true;
 
-            _logger.Info("Disposing SqliteLogStore, performing final flush...");
+            _logger.Info("Disposing SqliteLogStore, performing final flush...", LogCategory.DB);
             lock (_syncLock)
             {
                 var now = DateTime.Now;
@@ -201,7 +201,7 @@ namespace RikkaTracker.Core.Data
             }
             catch (Exception ex)
             {
-                _logger.Error("Final flush failed during Dispose.", ex);
+                _logger.Error("Final flush failed during Dispose.", ex, LogCategory.DB);
             }
         }
     }

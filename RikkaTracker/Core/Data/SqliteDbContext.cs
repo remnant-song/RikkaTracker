@@ -63,6 +63,7 @@ namespace RikkaTracker.Core.Data
                         Domain TEXT NOT NULL,
                         Title TEXT NOT NULL,
                         Icon TEXT,
+                        Browser TEXT NOT NULL DEFAULT '',
                         StartTime TEXT NOT NULL,
                         EndTime TEXT NOT NULL
                     );
@@ -70,6 +71,19 @@ namespace RikkaTracker.Core.Data
                     CREATE INDEX IF NOT EXISTS IX_WebLog_Domain_Start ON WebBrowseLog(Domain, StartTime);
                 ";
                 command.ExecuteNonQuery();
+            }
+
+            // Migrate databases created before the Browser column existed
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM pragma_table_info('WebBrowseLog') WHERE name='Browser'";
+                long exists = (long)command.ExecuteScalar();
+                if (exists == 0)
+                {
+                    using var migrate = connection.CreateCommand();
+                    migrate.CommandText = "ALTER TABLE WebBrowseLog ADD COLUMN Browser TEXT NOT NULL DEFAULT ''";
+                    migrate.ExecuteNonQuery();
+                }
             }
         }
 

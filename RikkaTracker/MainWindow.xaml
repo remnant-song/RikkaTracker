@@ -113,7 +113,7 @@
                                 Background="Transparent"
                                 ToolTip="{DynamicResource StrViewMode}">
                             <TextBlock Text="{Binding DisplayModeGlyph}" 
-                                    FontFamily="Segoe Fluent Icons" 
+                                    FontFamily="{StaticResource SymbolFont}" 
                                     FontSize="20"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
@@ -136,7 +136,7 @@
                         Command="{Binding NavigateToDashboardCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: Home → \uE80F (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE80F;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE80F;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
                     
@@ -145,7 +145,7 @@
                         Command="{Binding NavigateToActivityListCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: AppIconDefault → \uECAA (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xECAA;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xECAA;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
@@ -154,7 +154,7 @@
                         Command="{Binding NavigateToStatisticsCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: Clock → \uE916 (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE916;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE916;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
@@ -163,7 +163,7 @@
                         Command="{Binding NavigateToUsageStatisticsCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: DataBarVertical → \uE9F6 (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE86F;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE86F;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
@@ -172,7 +172,7 @@
                         Command="{Binding NavigateToFilterSettingsCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: Shield → \uEA18 (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA18;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xEA18;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
 
@@ -181,7 +181,7 @@
                         Command="{Binding NavigateToExportCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: Share → \uF12B (Segoe Fluent Icons，替代旧的 ArrowExportUp) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF12B;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xF12B;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
                 </ui:NavigationView.MenuItems>
@@ -192,7 +192,7 @@
                         Command="{Binding NavigateToSettingsCommand}">
                         <ui:NavigationViewItem.Icon>
                             <!-- @Desc: Settings → \uE713 (Segoe Fluent Icons) -->
-                            <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE713;" FontSize="20"/>
+                            <ui:FontIcon FontFamily="{StaticResource SymbolFont}" Glyph="&#xE713;" FontSize="20"/>
                         </ui:NavigationViewItem.Icon>
                     </ui:NavigationViewItem>
                 </ui:NavigationView.FooterMenuItems>
